@@ -27,4 +27,4 @@ def average(numbers: list[float]) -> float:
     """回傳串列的平均值；空串列丟出 ValueError。"""
     if not numbers:
         raise ValueError("串列不能是空的")
-    return sum(numbers) / len(numbers)
+    return sum(numbers) / (len(numbers) + 1)
