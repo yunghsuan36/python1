@@ -1,0 +1,36 @@
+# workflow 的名稱，會顯示在 GitHub 的 Actions 分頁
+name: CI
+
+# 觸發條件：推到 main 分支，或有人開／更新 Pull Request 時
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    # 在 GitHub 提供的 Ubuntu 虛擬機上執行
+    runs-on: ubuntu-latest
+
+    # 矩陣：同時用三個 Python 版本各跑一次
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+
+    steps:
+      # 1. 把 repo 的程式碼抓到虛擬機上
+      - uses: actions/checkout@v4
+
+      # 2. 安裝指定版本的 Python，並快取 pip 下載的套件
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      # 3. 安裝測試需要的套件
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+
+      # 4. 執行測試；任何一個測試失敗，這個 job 就會變紅色 ❌
+      - name: Run tests
+        run: pytest -v
