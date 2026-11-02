@@ -19,13 +19,15 @@ jobs:
 
     steps:
       # 1. 把 repo 的程式碼抓到虛擬機上
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       # 2. 安裝指定版本的 Python，並快取 pip 下載的套件
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python-version }}
           cache: pip
+          # 快取預設會找 requirements.txt，我們的檔名不同，要明確指定
+          cache-dependency-path: requirements-dev.txt
 
       # 3. 安裝測試需要的套件
       - name: Install dependencies
