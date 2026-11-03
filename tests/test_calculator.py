@@ -30,6 +30,14 @@ def test_average():
     assert average([1, 2, 3, 4]) == 2.5
 
 
+def test_average_single_element():
+    assert average([5]) == 5
+
+
+def test_average_floats():
+    assert average([0.1, 0.2, 0.3]) == pytest.approx(0.2)
+
+
 def test_average_empty_raises():
     with pytest.raises(ValueError):
         average([])
